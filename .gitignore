@@ -1,0 +1,32 @@
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+.env
+
+# PHP
+vendor/
+composer.lock
+.phpunit.result.cache
+/public/uploads/cv/*
+!/public/uploads/cv/.gitkeep
+/public/uploads/lm/*
+!/public/uploads/lm/.gitkeep
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE/editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build output
+dist/
+build/
+
+# Logs
+logs/
+*.log
