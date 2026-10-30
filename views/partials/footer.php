@@ -54,6 +54,7 @@
                 <li><a href="index.php?page=apropos" class="hover:text-blue-500 transition-colors">À propos</a></li>
                 <li><a href="index.php?page=offres" class="hover:text-blue-500 transition-colors">Nous rejoindre</a></li>
                 <li><a href="index.php?page=contact" class="hover:text-blue-500 transition-colors">Contact</a></li>
+                <li><a href="index.php?page=politique-confidentialite" class="hover:text-blue-500 transition-colors">Politique de confidentialit&eacute;</a></li>
             </ul>
         </div>
 

@@ -21,6 +21,7 @@ $pages_publiques = [
     // CUSTOMS
     'accueil' => __DIR__ . '/../views/customs/pages/accueil.php',
     'contact' => __DIR__ . '/../views/customs/pages/contact.php',
+    'politique-confidentialite' => __DIR__ . '/../views/customs/pages/politique-confidentialite.php',
     'offres' => __DIR__ . '/../controllers/custom/CandidatureSpontaneeController.php',
     // 'offres' => __DIR__ . '/../views/customs/pages/offre.php',
     // 'detail-offre'  => __DIR__ . '/../views/customs/pages/detail-offre.php',
