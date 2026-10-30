@@ -31,6 +31,12 @@
             enctype="multipart/form-data"
             class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
             <input type="hidden" name="type_candidature" value="poste">
+            <?php if (!empty($offrePostErrors)): ?>
+                <div role="alert" class="md:col-span-2 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                    <p class="font-semibold">Votre candidature n'a pas pu etre envoyee :</p>
+                    <ul class="mt-2 list-disc pl-5"><?php foreach ($offrePostErrors as $error): ?><li><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></li><?php endforeach; ?></ul>
+                </div>
+            <?php endif; ?>
 
             <!-- Nom complet -->
             <div>
@@ -41,7 +47,7 @@
                 </label>
                 <input
                     id="poste-nom"
-                    name="nom_complet"
+                    name="nom_complet" value="<?= htmlspecialchars($offrePostForm['nom_complet'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                     type="text"
                     autocomplete="name"
                     required
@@ -59,7 +65,7 @@
                 </label>
                 <input
                     id="poste-email"
-                    name="email"
+                    name="email" value="<?= htmlspecialchars($offrePostForm['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                     type="email"
                     autocomplete="email"
                     required
@@ -77,7 +83,7 @@
                 </label>
                 <input
                     id="poste-telephone"
-                    name="telephone"
+                    name="telephone" value="<?= htmlspecialchars($offrePostForm['telephone'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                     type="tel"
                     autocomplete="tel"
                     required
@@ -86,25 +92,13 @@
                     <p id="msg-poste-telephone" class="mt-1.5 hidden text-xs font-medium"></p>
             </div>
 
-            <!-- Poste souhaité -->
+            <!-- Offre selectionnee -->
             <div>
-                <label
-                    for="poste-intitule"
-                    class="font-inter mb-2 block text-sm font-semibold text-blue-950 dark:text-white">
-                    Poste souhaité *
-                </label>
-                <input
-                    id="poste-intitule"
-                    name="offre_id"
-                    type="text"
-                    value=""
-                    required
-                    disabled
-                    placeholder="Ex. Chargé(e) de communication"
-                    class="font-inter w-full rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-white/20 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-400">
-                    <p id="msg-poste-intitule" class="mt-1.5 hidden text-xs font-medium"></p>
+                <label for="poste-intitule" class="font-inter mb-2 block text-sm font-semibold text-blue-950 dark:text-white">Offre choisie *</label>
+                <input id="poste-intitule" type="text" value="<?= htmlspecialchars($selectedOffreTitle ?? '', ENT_QUOTES, 'UTF-8') ?>" required readonly placeholder="Choisissez une offre avec le bouton Postuler" class="font-inter w-full rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none dark:border-white/20 dark:bg-white/5 dark:text-white">
+                <input id="poste-offre-id" name="offre_id" type="hidden" value="<?= htmlspecialchars($offrePostForm['offre_id'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                <p id="msg-poste-intitule" class="mt-1.5 hidden text-xs font-medium"></p>
             </div>
-
             <!-- Message de candidature -->
             <div class="md:col-span-2">
                 <label
@@ -117,7 +111,7 @@
                     name="message"
                     rows="4"
                     placeholder="Pourquoi souhaitez-vous rejoindre le Cabinet SFID ?"
-                    class="font-inter w-full resize-y rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-white/20 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-400"></textarea>
+                    class="font-inter w-full resize-y rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-white/20 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-400"><?= htmlspecialchars($offrePostForm['message'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
             </div>
 
             <!-- CV -->

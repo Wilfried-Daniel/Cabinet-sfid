@@ -1,4 +1,12 @@
-<?php $admin_active_page = $admin_active_page ?? 'stats'; ?>
+<?php
+$admin_active_page = $admin_active_page ?? 'stats';
+require_once __DIR__ . '/../../../models/admin/AdminCandidatureModel.php';
+$sidebarCandidatures = new AdminCandidatureModel($pdo);
+$sidebarOffreCount = $sidebarCandidatures->getTotalOffres();
+$sidebarSpontaneeCount = $sidebarCandidatures->getTotalSpontanees();
+$sidebarAdminName = (string) ($_SESSION['admin_name'] ?? 'Administrateur');
+$sidebarAdminInitial = strtoupper(substr($sidebarAdminName, 0, 1));
+?>
 
 <aside
     class="fixed inset-y-0 left-0 z-30 hidden w-1/5 min-w-64 max-w-80 flex-col border-r border-white/10 bg-[#111c33] px-5 py-7 text-white lg:flex">
@@ -37,7 +45,7 @@
             </svg>
             Candidatures
             <span
-                class="ml-auto rounded-full bg-violet-300 px-2 py-0.5 text-[.68rem] font-bold text-[#111c33]">12</span>
+                class="ml-auto rounded-full bg-violet-300 px-2 py-0.5 text-[.68rem] font-bold text-[#111c33]"><?= $sidebarOffreCount ?></span>
         </a>
         <a href="index.php?page=spontanee"
             class="<?= $admin_active_page === 'spontanee'
@@ -49,7 +57,7 @@
                 <path d="M8 9h8M8 13h5"></path>
             </svg>
             Spontanées
-            <span class="ml-auto rounded-full bg-white/10 px-2 py-0.5 text-[.68rem] font-bold text-white/80">08</span>
+            <span class="ml-auto rounded-full bg-white/10 px-2 py-0.5 text-[.68rem] font-bold text-white/80"><?= $sidebarSpontaneeCount ?></span>
         </a>
         <a href="index.php?page=ajouter-offre"
             class="<?= $admin_active_page === 'offres'
@@ -89,9 +97,9 @@
             class="mt-3 flex items-center gap-3 rounded-xl bg-white/5 px-3 py-3 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-violet-300"
             aria-label="Modifier mon profil administrateur">
             <span
-                class="grid size-9 place-items-center rounded-full bg-violet-300 font-jakarta text-sm font-extrabold text-[#111c33]">A</span>
+                class="grid size-9 place-items-center rounded-full bg-violet-300 font-jakarta text-sm font-extrabold text-[#111c33]"><?= htmlspecialchars($sidebarAdminInitial, ENT_QUOTES, 'UTF-8') ?></span>
             <span class="min-w-0">
-                <span class="block truncate text-sm font-bold">Administrateur</span>
+                <span class="block truncate text-sm font-bold"><?= htmlspecialchars($sidebarAdminName, ENT_QUOTES, 'UTF-8') ?></span>
                 <span class="block truncate text-xs text-white/50">Cabinet SFID</span>
             </span>
             <svg class="ml-auto size-4 shrink-0 text-white/55" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -163,7 +171,7 @@
                 <circle cx="9" cy="7" r="4"></circle>
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>Candidatures <span
-                class="ml-auto rounded-full bg-violet-300 px-2 py-0.5 text-[.68rem] font-bold text-[#111c33]">12</span></a>
+                class="ml-auto rounded-full bg-violet-300 px-2 py-0.5 text-[.68rem] font-bold text-[#111c33]"><?= $sidebarOffreCount ?></span></a>
         <a href="index.php?page=spontanee"
             class="<?= $admin_active_page === 'spontanee'
                 ? 'bg-white/10 text-white'
@@ -173,7 +181,7 @@
                 <path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path>
                 <path d="M8 9h8M8 13h5"></path>
             </svg>Candidatures spontanées <span
-                class="ml-auto rounded-full bg-white/10 px-2 py-0.5 text-[.68rem] font-bold text-white/80">08</span></a>
+                class="ml-auto rounded-full bg-white/10 px-2 py-0.5 text-[.68rem] font-bold text-white/80"><?= $sidebarSpontaneeCount ?></span></a>
         <a href="index.php?page=ajouter-offre"
             class="<?= $admin_active_page === 'offres'
                 ? 'bg-white/10 text-white'
@@ -188,8 +196,8 @@
     <div class="mt-auto border-t border-white/10 pt-5">
         <a href="index.php?page=profil"
             class="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-3 transition hover:bg-white/10"><span
-                class="grid size-9 place-items-center rounded-full bg-violet-300 font-jakarta text-sm font-extrabold text-[#111c33]">A</span><span
-                class="min-w-0"><span class="block truncate text-sm font-bold">Administrateur</span><span
+                class="grid size-9 place-items-center rounded-full bg-violet-300 font-jakarta text-sm font-extrabold text-[#111c33]"><?= htmlspecialchars($sidebarAdminInitial, ENT_QUOTES, 'UTF-8') ?></span><span
+                class="min-w-0"><span class="block truncate text-sm font-bold"><?= htmlspecialchars($sidebarAdminName, ENT_QUOTES, 'UTF-8') ?></span><span
                     class="block truncate text-xs text-white/50">Modifier mon profil</span></span><svg
                 class="ml-auto size-4 shrink-0 text-white/55" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" aria-hidden="true">

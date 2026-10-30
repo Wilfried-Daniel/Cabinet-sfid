@@ -33,13 +33,14 @@ $pages_publiques = [
     'login' => __DIR__ . '/../controllers/admin/LoginController.php',
     'logout' => __DIR__ . '/../controllers/admin/LogoutController.php',
     'spontanee'     => __DIR__ . '/../controllers/admin/AdminSpontaneeController.php',
+    'admin-candidature-detail' => __DIR__ . '/../controllers/admin/AdminCandidatureDetailController.php',
 
     // vues
-    'dashboard' => __DIR__ . '/../views/admin/dashboard/stats.php',
-    'candidatures' => __DIR__ . '/../views/admin/dashboard/candidatures.php',
+    'dashboard' => __DIR__ . '/../controllers/admin/AdminDashboardController.php',
+    'candidatures' => __DIR__ . '/../controllers/admin/AdminCandidaturesController.php',
     // 'spontanee' => __DIR__ . '/../views/admin/dashboard/spontanee.php',
-    'ajouter-offre' => __DIR__ . '/../views/admin/dashboard/add-offre.php',
-    'profil' => __DIR__ . '/../views/admin/dashboard/profil.php',
+    'ajouter-offre' => __DIR__ . '/../controllers/admin/AdminOffreController.php',
+    'profil' => __DIR__ . '/../controllers/admin/AdminProfilController.php',
 ];
 
 // Si la page demandée ne se trouve pas dans notre tableau de pages on retourne la page 404
@@ -49,7 +50,7 @@ if (!array_key_exists($page, $pages_publiques)) {
 }
 
 // Protection de l'espace d'administration
-$pages_admin = ['dashboard', 'candidatures', 'spontanee', 'ajouter-offre', 'profil'];
+$pages_admin = ['dashboard', 'candidatures', 'spontanee', 'admin-candidature-detail', 'ajouter-offre', 'profil'];
 // Si la page demandée fait partie de l'espace admin, on vérifie si l'admin s'est connecté (grâce à la session).
 // Si NON on refuse l'accès et on le renvoie sur la page de connexion
 if (in_array($page, $pages_admin)) {
@@ -67,6 +68,7 @@ $pages_sans_gabarit = [
     'dashboard',
     'candidatures',
     'spontanee',
+    'admin-candidature-detail',
     'ajouter-offre',
     'profil',
 ];

@@ -46,8 +46,8 @@ $colors = [
             </div>
             <span class="w-max rounded-xl bg-violet-100 px-4 py-2.5 text-sm font-bold text-violet-700">
                 <?= sprintf(
-                    '%02d',
-                    count($candidatures ?? []),
+                    '%d',
+                    ($totalCandidatures ?? 0),
                 ) ?> profil(s) reçu(s)
             </span>
         </div>

@@ -146,4 +146,75 @@ class CandidatureModel
         $sql = "SELECT COUNT(*) FROM candidatures WHERE type = 'spontanee'";
         return (int) $this->db->query($sql)->fetchColumn();
     }
+
+    public function enregistrerCandidatureOffre(array $dataCandidat, int $offreId, string $message, array $documents): bool
+    {
+        try {
+            $this->db->beginTransaction();
+            $offreStatement = $this->db->prepare(
+                "SELECT id, titre FROM offres WHERE id = :id AND statut = 'ouverte'
+                 AND (date_cloture IS NULL OR date_cloture >= CURRENT_TIMESTAMP) FOR UPDATE"
+            );
+            $offreStatement->execute(['id' => $offreId]);
+            $offre = $offreStatement->fetch(PDO::FETCH_ASSOC);
+            if (!$offre) {
+                $this->db->rollBack();
+                return false;
+            }
+
+            $candidateStatement = $this->db->prepare('SELECT id FROM candidats WHERE email = :email LIMIT 1');
+            $candidateStatement->execute(['email' => $dataCandidat['email']]);
+            $candidatId = $candidateStatement->fetchColumn();
+            if ($candidatId) {
+                $updateCandidate = $this->db->prepare(
+                    'UPDATE candidats SET nom_complet = :nom, telephone = :telephone, updated_at = CURRENT_TIMESTAMP WHERE id = :id'
+                );
+                $updateCandidate->execute(['nom' => $dataCandidat['nom_complet'], 'telephone' => $dataCandidat['telephone'], 'id' => $candidatId]);
+            } else {
+                $insertCandidate = $this->db->prepare(
+                    'INSERT INTO candidats (nom_complet, email, telephone, created_at, updated_at) VALUES (:nom, :email, :telephone, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)'
+                );
+                $insertCandidate->execute(['nom' => $dataCandidat['nom_complet'], 'email' => $dataCandidat['email'], 'telephone' => $dataCandidat['telephone']]);
+                $candidatId = $this->db->lastInsertId();
+            }
+
+            $insertApplication = $this->db->prepare(
+                "INSERT INTO candidatures (candidat_id, offre_id, type, poste, domaine, message, date_candidature, created_at, updated_at)
+                 VALUES (:candidat_id, :offre_id, 'offre', :poste, :domaine, :message, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"
+            );
+            $insertApplication->execute([
+                'candidat_id' => $candidatId,
+                'offre_id' => $offreId,
+                'poste' => $offre['titre'],
+                'domaine' => 'offre',
+                'message' => $message,
+            ]);
+            $candidatureId = $this->db->lastInsertId();
+
+            $insertDocument = $this->db->prepare(
+                'INSERT INTO documents_candidatures (candidature_id, type, nom_original, nom_fichier, chemin, type_mime, taille, created_at)
+                 VALUES (:candidature_id, :type, :nom_original, :nom_fichier, :chemin, :type_mime, :taille, CURRENT_TIMESTAMP)'
+            );
+            foreach ($documents as $document) {
+                $insertDocument->execute([
+                    'candidature_id' => $candidatureId,
+                    'type' => $document['type'],
+                    'nom_original' => $document['nom_original'],
+                    'nom_fichier' => $document['nom_fichier'],
+                    'chemin' => $document['chemin'],
+                    'type_mime' => $document['type_mime'],
+                    'taille' => $document['taille'],
+                ]);
+            }
+
+            $this->db->commit();
+            return true;
+        } catch (Throwable $exception) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            error_log('Offer application insert failed: ' . $exception->getMessage());
+            return false;
+        }
+    }
 }
